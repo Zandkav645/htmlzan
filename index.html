@@ -63,6 +63,18 @@
             position: relative;
         }
 
+        .header-image {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
         h1 {
             font-size: 2.5rem;
             margin-bottom: 0.5rem;
@@ -169,12 +181,6 @@
             font-size: 14px;
             line-height: 1.5;
             color: #f8f8f8;
-        }
-
-        .html-display pre {
-            margin: 0;
-            white-space: pre-wrap;
-            word-wrap: break-word;
         }
 
         .loading {
@@ -312,7 +318,7 @@
         /* Kocak Styles */
         .kocak-mode {
             position: fixed;
-            bottom: 80px; /* Changed from 20px to make space for logo */
+            bottom: 20px;
             right: 20px;
             background-color: var(--kocak-color);
             color: #000;
@@ -334,18 +340,15 @@
             75% { transform: rotate(-5deg); }
         }
 
-        /* New logo position styles */
+        /* Logo Container */
         .logo-container {
             position: fixed;
-            bottom: 20px;
+            bottom: 70px;
             right: 20px;
             z-index: 999;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
 
-        .header-image {
+        .logo-image {
             width: 60px;
             height: 60px;
             border-radius: 50%;
@@ -370,11 +373,12 @@
                 width: 80%;
             }
             .header-image {
+                width: 60px;
+                height: 60px;
+            }
+            .logo-image {
                 width: 50px;
                 height: 50px;
-            }
-            .kocak-mode {
-                bottom: 70px;
             }
         }
     </style>
@@ -382,14 +386,14 @@
 <body>
     <div class="stars" id="stars"></div>
 
+    <!-- Logo Container -->
+    <div class="logo-container">
+        <img src="https://files.catbox.moe/0c2kht.jpg" alt="ZanDKav Logo" class="logo-image">
+    </div>
+
     <!-- Kocak Mode Button -->
     <div class="kocak-mode" id="kocak-mode">
         <i class="fas fa-laugh-squint"></i> Mode Kocak
-    </div>
-
-    <!-- Logo Container (new position) -->
-    <div class="logo-container">
-        <img src="https://files.catbox.moe/0c2kht.jpg" alt="ZanDKav Logo" class="header-image">
     </div>
 
     <!-- Sidebar Toggle -->
@@ -429,6 +433,7 @@
     </div>
 
     <header>
+        <img src="https://files.catbox.moe/0c2kht.jpg" alt="ZanDKav Logo" class="header-image">
         <h1>HTML <span class="kocak-text">ZanDKav</span></h1>
         <p class="tagline">View HTML source of any webpage with ease</p>
     </header>
@@ -557,6 +562,7 @@
         function toggleKocakMode() {
             document.body.classList.toggle('kocak-active');
             const kocakBtn = document.getElementById('kocak-mode');
+            const logoImage = document.querySelector('.logo-image');
             
             if (document.body.classList.contains('kocak-active')) {
                 kocakBtn.innerHTML = '<i class="fas fa-laugh-beam"></i> Mode Serius';
@@ -568,7 +574,7 @@
                 });
                 
                 // Make logo spin
-                document.querySelector('.header-image').style.animation = 'spin 2s linear infinite';
+                logoImage.style.animation = 'spin 2s linear infinite';
                 
                 // Change all buttons to rainbow colors
                 let colors = ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#4b0082', '#9400d3'];
@@ -584,7 +590,7 @@
                 kocakBtn.style.backgroundColor = 'var(--kocak-color)';
                 
                 // Reset animations
-                document.querySelector('.header-image').style.animation = 'none';
+                logoImage.style.animation = 'none';
                 document.querySelectorAll('button').forEach(btn => {
                     btn.style.backgroundColor = '';
                 });
@@ -603,96 +609,4 @@
             const sidebarToggle = document.getElementById('sidebar-toggle');
             const homeLink = document.getElementById('home-link');
             const devLink = document.getElementById('dev-link');
-            const devInfo = document.getElementById('dev-info');
-            
-            sidebarToggle.addEventListener('click', () => {
-                sidebar.classList.toggle('open');
-            });
-            
-            homeLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                devInfo.style.display = 'none';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-            
-            devLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                devInfo.style.display = 'block';
-            });
-            
-            // Close sidebar when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!sidebar.contains(e.target) && e.target !== sidebarToggle) {
-                    sidebar.classList.remove('open');
-                }
-            });
-            
-            // Main functionality
-            const urlInput = document.getElementById('url-input');
-            const fetchBtn = document.getElementById('fetch-btn');
-            const loading = document.getElementById('loading');
-            const resultSection = document.getElementById('result-section');
-            const htmlDisplay = document.getElementById('html-display');
-            const downloadBtn = document.getElementById('download-btn');
-            
-            fetchBtn.addEventListener('click', async () => {
-                const url = urlInput.value.trim();
-                if (!url) {
-                    alert('Woi, URLnya kosong nih bang! 😅');
-                    return;
-                }
-                
-                // Show loading, hide results
-                loading.style.display = 'block';
-                resultSection.style.display = 'none';
-                
-                try {
-                    // Add https:// if not present
-                    let fullUrl = url;
-                    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                        fullUrl = 'https://' + url;
-                    }
-                    
-                    const html = await fetchHTML(fullUrl);
-                    
-                    // Display the HTML with better formatting
-                    htmlDisplay.innerHTML = `<pre>${html}</pre>`;
-                    resultSection.style.display = 'block';
-                    
-                    // Set up download with the domain as filename
-                    try {
-                        const domain = new URL(fullUrl).hostname;
-                        downloadBtn.onclick = () => downloadHTML(html, `${domain}.html`);
-                    } catch {
-                        downloadBtn.onclick = () => downloadHTML(html, 'source.html');
-                    }
-                } catch (error) {
-                    htmlDisplay.innerHTML = `😱 <span class="kocak-text">Eror bang!</span> Silahkan hubungin owner\n\nError: ${error.message}\n\n<a href="https://t.me/Zandkav" target="_blank" style="color: var(--kocak-color);">Klik ini buat contact dev</a>`;
-                    resultSection.style.display = 'block';
-                } finally {
-                    loading.style.display = 'none';
-                }
-            });
-            
-            // Allow pressing Enter in the input field
-            urlInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    fetchBtn.click();
-                }
-            });
-            
-            // Random funny hover effect for buttons
-            document.querySelectorAll('button').forEach(btn => {
-                btn.addEventListener('mouseover', () => {
-                    if (document.body.classList.contains('kocak-active')) {
-                        btn.style.transform = 'rotate(5deg) scale(1.1)';
-                    }
-                });
-                btn.addEventListener('mouseout', () => {
-                    btn.style.transform = '';
-                });
-            });
-        });
-    </script>
-</body>
-</html>
+            const devInfo = document.getElementById('dev-info
