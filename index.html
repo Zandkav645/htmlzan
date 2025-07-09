@@ -1412,23 +1412,208 @@
             // Allow pressing Enter in the input field
             urlInput.addEventListener('keypress', (e) => {
                 if (e.key === 'Enter') {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML ZanDKav - HTML Viewer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2ecc71;
+            --secondary-color: #27ae60;
+            --dark-color: #1e8449;
+            --light-color: #58d68d;
+            --text-color: #ecf0f1;
+            --bg-color: #121f1f;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+            padding: 2rem;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+        
+        .input-section {
+            background: rgba(46, 204, 113, 0.1);
+            border: 1px solid var(--primary-color);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .input-group {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        input[type="url"] {
+            flex: 1;
+            padding: 0.8rem 1rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 4px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+        
+        button {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .result-section {
+            display: none;
+            margin-top: 2rem;
+        }
+        
+        .html-display {
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 1rem;
+            max-height: 500px;
+            overflow-y: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>HTML ZanDKav</h1>
+        <p>View HTML source of any webpage with ease</p>
+    </header>
+    
+    <div class="container">
+        <section class="input-section">
+            <h2>Enter URL to View HTML</h2>
+            <div class="input-group">
+                <input type="url" id="url-input" placeholder="https://example.com" required>
+                <button id="fetch-btn"><i class="fas fa-code"></i> Cek HTML</button>
+            </div>
+            <p>Masukkan URL website (contoh: https://github.com/username/repo)</p>
+        </section>
+        
+        <section class="result-section" id="result-section">
+            <div class="html-display" id="html-display"></div>
+        </section>
+    </div>
+    
+    <footer>
+        <p>HTML ZanDKav © 2023 | A simple tool to view webpage HTML source</p>
+        <p>Kalo error, <strong>sabar ya bang!</strong> 😊</p>
+    </footer>
+    
+    <script>
+        // Fungsi utama yang akan dijalankan saat halaman siap
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlInput = document.getElementById('url-input');
+            const fetchBtn = document.getElementById('fetch-btn');
+            const resultSection = document.getElementById('result-section');
+            const htmlDisplay = document.getElementById('html-display');
+            
+            // Event listener untuk tombol Cek HTML
+            fetchBtn.addEventListener('click', function() {
+                const url = urlInput.value.trim();
+                
+                if (!url) {
+                    alert('Woi, URLnya kosong nih bang! 😅');
+                    return;
+                }
+                
+                // Tampilkan loading
+                htmlDisplay.textContent = "Loading...";
+                resultSection.style.display = 'block';
+                
+                // Panggil fungsi fetchHTML
+                fetchHTML(url)
+                    .then(html => {
+                        htmlDisplay.textContent = html;
+                    })
+                    .catch(error => {
+                        htmlDisplay.textContent = `Error bang: ${error.message}\n\nHubungi dev ya!`;
+                    });
+            });
+            
+            // Juga bisa pakai Enter
+            urlInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
                     fetchBtn.click();
                 }
             });
-            
-            // Random funny hover effect for buttons
-            document.querySelectorAll('button').forEach(btn => {
-                btn.addEventListener('mouseover', () => {
-                    if (document.body.classList.contains('kocak-active')) {
-                        btn.style.transform = 'rotate(5deg) scale(1.1)';
-                    }
-                });
-                
-                btn.addEventListener('mouseout', () => {
-                    btn.style.transform = '';
-                });
-            });
         });
+        
+        // Fungsi untuk mengambil HTML dari URL
+        async function fetchHTML(url) {
+            try {
+                // Tambahkan https:// jika belum ada
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    url = 'https://' + url;
+                }
+                
+                // Gunakan proxy untuk menghindari CORS
+                const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
+                const response = await fetch(proxyUrl);
+                
+                if (!response.ok) {
+                    throw new Error('Gagal mengambil data');
+                }
+                
+                const data = await response.json();
+                
+                if (data.contents) {
+                    return data.contents;
+                } else {
+                    throw new Error('HTML tidak ditemukan');
+                }
+            } catch (error) {
+                throw new Error(`Gagal mengambil HTML: ${error.message}`);
+            }
+        }
     </script>
 </body>
 </html>
