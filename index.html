@@ -14,6 +14,7 @@
             --text-color: #ecf0f1;
             --bg-color: #121f1f;
             --kocak-color: #f1c40f;
+            --wa-color: #25D366;
         }
         
         * {
@@ -73,6 +74,29 @@
             object-fit: cover;
             border: 3px solid white;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .wa-logo {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--wa-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 30px;
+            border: 3px solid white;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .wa-logo:hover {
+            transform: scale(1.1);
         }
         
         h1 {
@@ -359,6 +383,12 @@
                 width: 60px;
                 height: 60px;
             }
+            
+            .wa-logo {
+                width: 50px;
+                height: 50px;
+                font-size: 25px;
+            }
         }
     </style>
 </head>
@@ -369,6 +399,11 @@
     <div class="kocak-mode" id="kocak-mode">
         <i class="fas fa-laugh-squint"></i> Mode Kocak
     </div>
+    
+    <!-- WA Logo -->
+    <a href="https://whatsapp.com/channel/0029Vaqe6AA5PO13FUcYkJ3b" class="wa-logo" target="_blank" title="WhatsApp Channel">
+        <i class="fab fa-whatsapp"></i>
+    </a>
     
     <!-- Sidebar Toggle -->
     <div class="sidebar-toggle" id="sidebar-toggle">
@@ -496,6 +531,11 @@
                 const encodedUrl = encodeURIComponent(url);
                 
                 const response = await fetch(`${proxyUrl}${encodedUrl}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
                 const data = await response.json();
                 
                 if (data.contents) {
@@ -558,12 +598,15 @@
                 let colors = ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#4b0082', '#9400d3'];
                 let colorIndex = 0;
                 
-                setInterval(() => {
+                const rainbowInterval = setInterval(() => {
                     document.querySelectorAll('button').forEach(btn => {
                         btn.style.backgroundColor = colors[colorIndex];
                     });
                     colorIndex = (colorIndex + 1) % colors.length;
                 }, 300);
+                
+                // Store interval ID to clear later
+                kocakBtn.dataset.intervalId = rainbowInterval;
             } else {
                 kocakBtn.innerHTML = '<i class="fas fa-laugh-squint"></i> Mode Kocak';
                 kocakBtn.style.backgroundColor = 'var(--kocak-color)';
@@ -573,6 +616,9 @@
                 document.querySelectorAll('button').forEach(btn => {
                     btn.style.backgroundColor = '';
                 });
+                
+                // Clear rainbow interval
+                clearInterval(kocakBtn.dataset.intervalId);
             }
         }
         
