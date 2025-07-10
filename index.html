@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML ZanDKav - HTML Viewer Kocak</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <title>HTML ZanDKav - HTML Viewer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --primary-color: #2ecc71;
@@ -13,100 +13,54 @@
             --light-color: #58d68d;
             --text-color: #ecf0f1;
             --bg-color: #121f1f;
-            --kocak-color: #f1c40f;
         }
-
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
+        
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
             min-height: 100vh;
             overflow-x: hidden;
-            position: relative;
         }
-
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .star {
-            position: absolute;
-            background-color: var(--light-color);
-            border-radius: 50%;
-            animation: twinkle var(--duration) infinite ease-in-out;
-            opacity: 0;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0; transform: scale(0.5); }
-            50% { opacity: 0.8; transform: scale(1); }
-        }
-
+        
         header {
             background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
             padding: 2rem;
             text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
             margin-bottom: 2rem;
-            position: relative;
         }
-
-        .header-image {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid white;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-
+        
         h1 {
             font-size: 2.5rem;
             margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
         }
-
-        .tagline {
-            font-style: italic;
-            opacity: 0.9;
-        }
-
+        
         .container {
-            max-width: 1200px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 0 1.5rem;
         }
-
+        
         .input-section {
             background: rgba(46, 204, 113, 0.1);
             border: 1px solid var(--primary-color);
             border-radius: 8px;
             padding: 1.5rem;
             margin-bottom: 2rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-
+        
         .input-group {
             display: flex;
             gap: 0.5rem;
             margin-bottom: 1rem;
         }
-
+        
         input[type="url"] {
             flex: 1;
             padding: 0.8rem 1rem;
@@ -115,16 +69,8 @@
             background-color: rgba(255, 255, 255, 0.1);
             color: var(--text-color);
             font-size: 1rem;
-            transition: all 0.3s;
         }
-
-        input[type="url"]:focus {
-            outline: none;
-            border-color: var(--light-color);
-            box-shadow: 0 0 0 3px rgba(88, 214, 141, 0.3);
-            background-color: rgba(255, 255, 255, 0.15);
-        }
-
+        
         button {
             padding: 0.8rem 1.5rem;
             background-color: var(--primary-color);
@@ -132,42 +78,20 @@
             border: none;
             border-radius: 4px;
             font-size: 1rem;
-            font-weight: bold;
             cursor: pointer;
             transition: all 0.3s;
         }
-
+        
         button:hover {
             background-color: var(--secondary-color);
             transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
-
-        button:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
+        
         .result-section {
             display: none;
             margin-top: 2rem;
         }
-
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .download-btn {
-            background-color: var(--dark-color);
-        }
-
-        .download-btn:hover {
-            background-color: #1a6e3a;
-        }
-
+        
         .html-display {
             background-color: #1a1a1a;
             border: 1px solid #333;
@@ -177,267 +101,27 @@
             overflow-y: auto;
             font-family: 'Courier New', Courier, monospace;
             white-space: pre-wrap;
-            position: relative;
-            font-size: 14px;
-            line-height: 1.5;
-            color: #f8f8f8;
         }
-
+        
         .loading {
             display: none;
             text-align: center;
             padding: 2rem;
         }
-
-        .spinner {
-            border: 4px solid rgba(46, 204, 113, 0.3);
-            border-radius: 50%;
-            border-top: 4px solid var(--primary-color);
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
+        
         footer {
             text-align: center;
             padding: 2rem;
             margin-top: 3rem;
-            background: linear-gradient(135deg, var(--dark-color), #1a3a1a);
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* Sidebar Styles */
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 250px;
-            height: 100%;
-            background: linear-gradient(180deg, var(--dark-color), #1a3a1a);
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
-            z-index: 1000;
-            padding-top: 20px;
-        }
-
-        .sidebar.open {
-            transform: translateX(0);
-        }
-
-        .sidebar-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            font-size: 24px;
-            color: white;
-            cursor: pointer;
-            z-index: 1001;
-            background-color: var(--primary-color);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        .sidebar-menu {
-            list-style: none;
-            padding: 0;
-            margin-top: 30px;
-        }
-
-        .sidebar-menu li {
-            padding: 15px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: background-color 0.3s;
-        }
-
-        .sidebar-menu li:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .sidebar-menu a {
-            color: white;
-            text-decoration: none;
-            display: block;
-            font-size: 16px;
-        }
-
-        .sidebar-menu i {
-            margin-right: 10px;
-            width: 20px;
-            text-align: center;
-        }
-
-        .developer-info {
-            padding: 20px;
-            margin-top: 20px;
-            background-color: rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        /* Social Icons */
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 20px;
-            transition: all 0.3s;
-            text-decoration: none;
-        }
-
-        .social-icon:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            background-color: var(--light-color);
-        }
-
-        /* Kocak Styles */
-        .kocak-mode {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: var(--kocak-color);
-            color: #000;
-            padding: 10px 15px;
-            border-radius: 50px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            z-index: 999;
-        }
-
-        .kocak-mode:hover {
-            animation: shake 0.5s infinite;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(5deg); }
-            75% { transform: rotate(-5deg); }
-        }
-
-        /* Logo Container */
-        .logo-container {
-            position: fixed;
-            bottom: 70px;
-            right: 20px;
-            z-index: 999;
-        }
-
-        .logo-image {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid white;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .kocak-text {
-            color: var(--kocak-color);
-            font-weight: bold;
-        }
-
-        @media (max-width: 768px) {
-            .input-group {
-                flex-direction: column;
-            }
-            button {
-                width: 100%;
-            }
-            .sidebar {
-                width: 80%;
-            }
-            .header-image {
-                width: 60px;
-                height: 60px;
-            }
-            .logo-image {
-                width: 50px;
-                height: 50px;
-            }
         }
     </style>
 </head>
 <body>
-    <div class="stars" id="stars"></div>
-
-    <!-- Logo Container -->
-    <div class="logo-container">
-        <img src="https://files.catbox.moe/0c2kht.jpg" alt="ZanDKav Logo" class="logo-image">
-    </div>
-
-    <!-- Kocak Mode Button -->
-    <div class="kocak-mode" id="kocak-mode">
-        <i class="fas fa-laugh-squint"></i> Mode Kocak
-    </div>
-
-    <!-- Sidebar Toggle -->
-    <div class="sidebar-toggle" id="sidebar-toggle">
-        <i class="fas fa-bars"></i>
-    </div>
-
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-menu">
-            <li>
-                <a href="#" id="home-link">
-                    <i class="fas fa-home"></i> Home
-                </a>
-            </li>
-            <li>
-                <a href="#" id="dev-link">
-                    <i class="fas fa-user"></i> Developer
-                </a>
-            </li>
-        </div>
-        <div class="developer-info" id="dev-info" style="display: none;">
-            <h3>Halo kak! 👋</h3>
-            <p>Dev pembikin web ini bernama <span class="kocak-text">ZanDKav</span> ya kak. Kalo mau tanya-tanya silahkan hubungin:</p>
-            <div class="social-icons">
-                <a href="https://t.me/Zandkav" class="social-icon" target="_blank" title="Telegram">
-                    <i class="fab fa-telegram"></i>
-                </a>
-                <a href="https://whatsapp.com/channel/0029Vaqe6AA5PO13FUcYkJ3b" class="social-icon" target="_blank" title="WhatsApp Channel">
-                    <i class="fab fa-whatsapp"></i>
-                </a>
-            </div>
-            <p style="margin-top: 15px; font-size: 12px; opacity: 0.7;">
-                <i class="fas fa-info-circle"></i> Kalo error, jangan marah-marah ya bang 😅
-            </p>
-        </div>
-    </div>
-
     <header>
-        <img src="https://files.catbox.moe/0c2kht.jpg" alt="ZanDKav Logo" class="header-image">
-        <h1>HTML <span class="kocak-text">ZanDKav</span></h1>
-        <p class="tagline">View HTML source of any webpage with ease</p>
+        <h1>HTML ZanDKav</h1>
+        <p>View HTML source of any webpage with ease</p>
     </header>
-
+    
     <div class="container">
         <section class="input-section">
             <h2>Enter URL to View HTML</h2>
@@ -445,814 +129,100 @@
                 <input type="url" id="url-input" placeholder="https://example.com" required>
                 <button id="fetch-btn"><i class="fas fa-code"></i> Cek HTML</button>
             </div>
-            <p>Masukkan URL website <span class="kocak-text">(contoh: https://github.com/username/repo)</span></p>
+            <p>Masukkan URL website (contoh: https://github.com/username/repo)</p>
         </section>
-
+        
         <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p>Memuat HTML... <span class="kocak-text">jangan di close dulu bang!</span></p>
+            <p>Loading HTML... Sabar ya bang!</p>
         </div>
-
+        
         <section class="result-section" id="result-section">
-            <div class="result-header">
-                <h2>HTML Source Code</h2>
-                <button class="download-btn" id="download-btn"><i class="fas fa-download"></i> Download HTML</button>
-            </div>
             <div class="html-display" id="html-display"></div>
         </section>
     </div>
-
+    
     <footer>
-        <div class="social-icons">
-            <a href="https://whatsapp.com/channel/0029Vaqe6AA5PO13FUcYkJ3b" class="social-icon" target="_blank" title="WhatsApp Channel">
-                <i class="fab fa-whatsapp"></i>
-            </a>
-        </div>
-        <p>HTML ZanDKav © 2023 | <span class="kocak-text">A simple tool to view webpage HTML source</span></p>
-        <p style="font-size: 12px; opacity: 0.7; margin-top: 10px;">Kalo error, <span class="kocak-text">sabar ya bang!</span> 😂</p>
+        <p>HTML ZanDKav © 2023 | A simple tool to view webpage HTML source</p>
+        <p>Kalo error, <strong>sabar ya bang!</strong> 😊</p>
     </footer>
-
+    
     <script>
-        // Create stars animation
-        function createStars() {
-            const starsContainer = document.getElementById('stars');
-            const starCount = 100;
-            
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
-                
-                // Random properties
-                const size = Math.random() * 3;
-                const posX = Math.random() * 100;
-                const posY = Math.random() * 100;
-                const duration = 2 + Math.random() * 3;
-                const delay = Math.random() * 5;
-                
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                star.style.left = `${posX}%`;
-                star.style.top = `${posY}%`;
-                star.style.setProperty('--duration', `${duration}s`);
-                star.style.animationDelay = `${delay}s`;
-                
-                starsContainer.appendChild(star);
-            }
-        }
-
-        // Fetch HTML from URL
-        async function fetchHTML(url) {
-            try {
-                // Show loading message with random funny text
-                const funnyMessages = [
-                    "Nyolong HTML dulu ya bang...",
-                    "Sabarrr... lagi ngopi dulu...",
-                    "Jangan di close, lagi kerja nih!",
-                    "Ini loading beneran, bukan tipu-tipu...",
-                    "Demi HTML yang suci, tunggu sebentar..."
-                ];
-                const randomMessage = funnyMessages[Math.floor(Math.random() * funnyMessages.length)];
-                document.querySelector('.loading p').innerHTML = `Memuat HTML... <span class="kocak-text">${randomMessage}</span>`;
-                
-                // Use a CORS proxy to avoid CORS issues
-                const proxyUrl = 'https://api.allorigins.win/get?url=';
-                const encodedUrl = encodeURIComponent(url);
-                const response = await fetch(`${proxyUrl}${encodedUrl}`);
-                const data = await response.json();
-                
-                if (data.contents) {
-                    return data.contents;
-                } else {
-                    throw new Error('Gagal mengambil HTML, coba cek URLnya bang!');
-                }
-            } catch (error) {
-                console.error('Error fetching HTML:', error);
-                return `😱 <span class="kocak-text">Eror bang!</span> Silahkan hubungin owner\n\nError: ${error.message}\n\n<a href="https://t.me/Zandkav" target="_blank" style="color: var(--kocak-color);">Klik ini buat contact dev</a>`;
-            }
-        }
-
-        // Download HTML as file
-        function downloadHTML(html, filename = 'source.html') {
-            const blob = new Blob([html], { type: 'text/html' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            
-            setTimeout(() => {
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }, 100);
-            
-            // Show funny alert
-            const funnyMessages = [
-                "HTML udah ke download bang!",
-                "Wokeh, file HTML udah di ambil!",
-                "Alhamdulillah, download berhasil!",
-                "HTMLnya udah di tas bang!",
-                "Sip, udah ke save!"
-            ];
-            const randomMessage = funnyMessages[Math.floor(Math.random() * funnyMessages.length)];
-            alert(randomMessage);
-        }
-
-        // Kocak Mode
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HTML ZanDKav - HTML Viewer Kocak</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        :root {
-            --primary-color: #2ecc71;
-            --secondary-color: #27ae60;
-            --dark-color: #1e8449;
-            --light-color: #58d68d;
-            --text-color: #ecf0f1;
-            --bg-color: #121f1f;
-            --kocak-color: #f1c40f;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            min-height: 100vh;
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .star {
-            position: absolute;
-            background-color: var(--light-color);
-            border-radius: 50%;
-            animation: twinkle var(--duration) infinite ease-in-out;
-            opacity: 0;
-        }
-
-        @keyframes twinkle {
-            0%, 100% { opacity: 0; transform: scale(0.5); }
-            50% { opacity: 0.8; transform: scale(1); }
-        }
-
-        header {
-            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
-            padding: 2rem;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        .header-image {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 3px solid white;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .tagline {
-            font-style: italic;
-            opacity: 0.9;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-        }
-
-        .input-section {
-            background: rgba(46, 204, 113, 0.1);
-            border: 1px solid var(--primary-color);
-            border-radius: 8px;
-            padding: 1.5rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .input-group {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-        }
-
-        input[type="url"] {
-            flex: 1;
-            padding: 0.8rem 1rem;
-            border: 2px solid var(--primary-color);
-            border-radius: 4px;
-            background-color: rgba(255, 255, 255, 0.1);
-            color: var(--text-color);
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-
-        input[type="url"]:focus {
-            outline: none;
-            border-color: var(--light-color);
-            box-shadow: 0 0 0 3px rgba(88, 214, 141, 0.3);
-            background-color: rgba(255, 255, 255, 0.15);
-        }
-
-        button {
-            padding: 0.8rem 1.5rem;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 4px;
-            font-size: 1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        button:hover {
-            background-color: var(--secondary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        button:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .result-section {
-            display: none;
-            margin-top: 2rem;
-        }
-
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1rem;
-        }
-
-        .download-btn {
-            background-color: var(--dark-color);
-        }
-
-        .download-btn:hover {
-            background-color: #1a6e3a;
-        }
-
-        .html-display {
-            background-color: #1a1a1a;
-            border: 1px solid #333;
-            border-radius: 4px;
-            padding: 1rem;
-            max-height: 500px;
-            overflow-y: auto;
-            font-family: 'Courier New', Courier, monospace;
-            white-space: pre-wrap;
-            position: relative;
-            font-size: 14px;
-            line-height: 1.5;
-            color: #f8f8f8;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .spinner {
-            border: 4px solid rgba(46, 204, 113, 0.3);
-            border-radius: 50%;
-            border-top: 4px solid var(--primary-color);
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 1rem;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        footer {
-            text-align: center;
-            padding: 2rem;
-            margin-top: 3rem;
-            background: linear-gradient(135deg, var(--dark-color), #1a3a1a);
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* Sidebar Styles */
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 250px;
-            height: 100%;
-            background: linear-gradient(180deg, var(--dark-color), #1a3a1a);
-            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
-            transform: translateX(-100%);
-            transition: transform 0.3s ease;
-            z-index: 1000;
-            padding-top: 20px;
-        }
-
-        .sidebar.open {
-            transform: translateX(0);
-        }
-
-        .sidebar-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            font-size: 24px;
-            color: white;
-            cursor: pointer;
-            z-index: 1001;
-            background-color: var(--primary-color);
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        .sidebar-menu {
-            list-style: none;
-            padding: 0;
-            margin-top: 30px;
-        }
-
-        .sidebar-menu li {
-            padding: 15px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            transition: background-color 0.3s;
-        }
-
-        .sidebar-menu li:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-        }
-
-        .sidebar-menu a {
-            color: white;
-            text-decoration: none;
-            display: block;
-            font-size: 16px;
-        }
-
-        .sidebar-menu i {
-            margin-right: 10px;
-            width: 20px;
-            text-align: center;
-        }
-
-        .developer-info {
-            padding: 20px;
-            margin-top: 20px;
-            background-color: rgba(0, 0, 0, 0.2);
-            border-radius: 8px;
-            font-size: 14px;
-            line-height: 1.5;
-        }
-
-        /* Social Icons */
-        .social-icons {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        .social-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--primary-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 20px;
-            transition: all 0.3s;
-            text-decoration: none;
-        }
-
-        .social-icon:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            background-color: var(--light-color);
-        }
-
-        /* Kocak Styles */
-        .kocak-mode {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: var(--kocak-color);
-            color: #000;
-            padding: 10px 15px;
-            border-radius: 50px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            z-index: 999;
-        }
-
-        .kocak-mode:hover {
-            animation: shake 0.5s infinite;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: rotate(0deg); }
-            25% { transform: rotate(5deg); }
-            75% { transform: rotate(-5deg); }
-        }
-
-        .kocak-text {
-            color: var(--kocak-color);
-            font-weight: bold;
-        }
-
-        @media (max-width: 768px) {
-            .input-group {
-                flex-direction: column;
-            }
-            button {
-                width: 100%;
-            }
-            .sidebar {
-                width: 80%;
-            }
-            .header-image {
-                width: 60px;
-                height: 60px;
-            }
-        }
-    </style>
-</head>
-<body>
-    <div class="stars" id="stars"></div>
-
-    <!-- Kocak Mode Button -->
-    <div class="kocak-mode" id="kocak-mode">
-        <i class="fas fa-laugh-squint"></i> Mode Kocak
-    </div>
-
-    <!-- Sidebar Toggle -->
-    <div class="sidebar-toggle" id="sidebar-toggle">
-        <i class="fas fa-bars"></i>
-    </div>
-
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-menu">
-            <li>
-                <a href="#" id="home-link">
-                    <i class="fas fa-home"></i> Home
-                </a>
-            </li>
-            <li>
-                <a href="#" id="dev-link">
-                    <i class="fas fa-user"></i> Developer
-                </a>
-            </li>
-        </div>
-        <div class="developer-info" id="dev-info" style="display: none;">
-            <h3>Halo kak! 👋</h3>
-            <p>Dev pembikin web ini bernama <span class="kocak-text">ZanDKav</span> ya kak. Kalo mau tanya-tanya silahkan hubungin:</p>
-            <div class="social-icons">
-                <a href="https://t.me/Zandkav" class="social-icon" target="_blank" title="Telegram">
-                    <i class="fab fa-telegram"></i>
-                </a>
-                <a href="https://whatsapp.com/channel/0029Vaqe6AA5PO13FUcYkJ3b" class="social-icon" target="_blank" title="WhatsApp Channel">
-                    <i class="fab fa-whatsapp"></i>
-                </a>
-            </div>
-            <p style="margin-top: 15px; font-size: 12px; opacity: 0.7;">
-                <i class="fas fa-info-circle"></i> Kalo error, jangan marah-marah ya bang 😅
-            </p>
-        </div>
-    </div>
-
-    <header>
-        <img src="https://files.catbox.moe/0c2kht.jpg" alt="ZanDKav Logo" class="header-image">
-        <h1>HTML <span class="kocak-text">ZanDKav</span></h1>
-        <p class="tagline">View HTML source of any webpage with ease</p>
-    </header>
-
-    <div class="container">
-        <section class="input-section">
-            <h2>Enter URL to View HTML</h2>
-            <div class="input-group">
-                <input type="url" id="url-input" placeholder="https://example.com" required>
-                <button id="fetch-btn"><i class="fas fa-code"></i> Cek HTML</button>
-            </div>
-            <p>Masukkan URL website <span class="kocak-text">(contoh: https://github.com/username/repo)</span></p>
-        </section>
-
-        <div class="loading" id="loading">
-            <div class="spinner"></div>
-            <p>Memuat HTML... <span class="kocak-text">jangan di close dulu bang!</span></p>
-        </div>
-
-        <section class="result-section" id="result-section">
-            <div class="result-header">
-                <h2>HTML Source Code</h2>
-                <button class="download-btn" id="download-btn"><i class="fas fa-download"></i> Download HTML</button>
-            </div>
-            <div class="html-display" id="html-display"></div>
-        </section>
-    </div>
-
-    <footer>
-        <div class="social-icons">
-            <a href="https://whatsapp.com/channel/0029Vaqe6AA5PO13FUcYkJ3b" class="social-icon" target="_blank" title="WhatsApp Channel">
-                <i class="fab fa-whatsapp"></i>
-            </a>
-        </div>
-        <p>HTML ZanDKav © 2023 | <span class="kocak-text">A simple tool to view webpage HTML source</span></p>
-        <p style="font-size: 12px; opacity: 0.7; margin-top: 10px;">Kalo error, <span class="kocak-text">sabar ya bang!</span> 😂</p>
-    </footer>
-
-    <script>
-        // Create stars animation
-        function createStars() {
-            const starsContainer = document.getElementById('stars');
-            const starCount = 100;
-            
-            for (let i = 0; i < starCount; i++) {
-                const star = document.createElement('div');
-                star.classList.add('star');
-                
-                // Random properties
-                const size = Math.random() * 3;
-                const posX = Math.random() * 100;
-                const posY = Math.random() * 100;
-                const duration = 2 + Math.random() * 3;
-                const delay = Math.random() * 5;
-                
-                star.style.width = `${size}px`;
-                star.style.height = `${size}px`;
-                star.style.left = `${posX}%`;
-                star.style.top = `${posY}%`;
-                star.style.setProperty('--duration', `${duration}s`);
-                star.style.animationDelay = `${delay}s`;
-                
-                starsContainer.appendChild(star);
-            }
-        }
-
-        // Fetch HTML from URL
-        async function fetchHTML(url) {
-            try {
-                // Show loading message with random funny text
-                const funnyMessages = [
-                    "Nyolong HTML dulu ya bang...",
-                    "Sabarrr... lagi ngopi dulu...",
-                    "Jangan di close, lagi kerja nih!",
-                    "Ini loading beneran, bukan tipu-tipu...",
-                    "Demi HTML yang suci, tunggu sebentar..."
-                ];
-                const randomMessage = funnyMessages[Math.floor(Math.random() * funnyMessages.length)];
-                document.querySelector('.loading p').innerHTML = `Memuat HTML... <span class="kocak-text">${randomMessage}</span>`;
-                
-                // Use a CORS proxy to avoid CORS issues
-                const proxyUrl = 'https://api.allorigins.win/get?url=';
-                const encodedUrl = encodeURIComponent(url);
-                const response = await fetch(`${proxyUrl}${encodedUrl}`);
-                
-                if (!response.ok) {
-                    throw new Error('Gagal mengambil HTML, coba cek URLnya bang!');
-                }
-                
-                const data = await response.json();
-                
-                if (data.contents) {
-                    return data.contents;
-                } else {
-                    throw new Error('Gagal mengambil konten HTML');
-                }
-            } catch (error) {
-                console.error('Error fetching HTML:', error);
-                return `😱 <span class="kocak-text">Eror bang!</span> Silahkan hubungin owner\n\nError: ${error.message}\n\n<a href="https://t.me/Zandkav" target="_blank" style="color: var(--kocak-color);">Klik ini buat contact dev</a>`;
-            }
-        }
-
-        // Download HTML as file
-        function downloadHTML(html, filename = 'source.html') {
-            try {
-                const blob = new Blob([html], { type: 'text/html' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = filename;
-                document.body.appendChild(a);
-                a.click();
-                
-                setTimeout(() => {
-                    document.body.removeChild(a);
-                    URL.revokeObjectURL(url);
-                }, 100);
-                
-                // Show funny alert
-                const funnyMessages = [
-                    "HTML udah ke download bang!",
-                    "Wokeh, file HTML udah di ambil!",
-                    "Alhamdulillah, download berhasil!",
-                    "HTMLnya udah di tas bang!",
-                    "Sip, udah ke save!"
-                ];
-                const randomMessage = funnyMessages[Math.floor(Math.random() * funnyMessages.length)];
-                alert(randomMessage);
-            } catch (error) {
-                console.error('Error downloading HTML:', error);
-                alert('Yah error pas download bang! 😅');
-            }
-        }
-
-        // Kocak Mode
-        function toggleKocakMode() {
-            document.body.classList.toggle('kocak-active');
-            const kocakBtn = document.getElementById('kocak-mode');
-            
-            if (document.body.classList.contains('kocak-active')) {
-                kocakBtn.innerHTML = '<i class="fas fa-laugh-beam"></i> Mode Serius';
-                kocakBtn.style.backgroundColor = '#e74c3c';
-                
-                // Add crazy animations
-                document.querySelectorAll('*').forEach(el => {
-                    el.style.transition = 'all 0.3s ease';
-                });
-                
-                // Make profile pic spin
-                document.querySelector('.header-image').style.animation = 'spin 2s linear infinite';
-                
-                // Change all buttons to rainbow colors
-                let colors = ['#ff0000', '#ff7f00', '#ffff00', '#00ff00', '#0000ff', '#4b0082', '#9400d3'];
-                let colorIndex = 0;
-                const rainbowInterval = setInterval(() => {
-                    document.querySelectorAll('button').forEach(btn => {
-                        btn.style.backgroundColor = colors[colorIndex];
-                    });
-                    colorIndex = (colorIndex + 1) % colors.length;
-                }, 300);
-                
-                // Store interval ID to clear later
-                document.body.dataset.rainbowInterval = rainbowInterval;
-            } else {
-                kocakBtn.innerHTML = '<i class="fas fa-laugh-squint"></i> Mode Kocak';
-                kocakBtn.style.backgroundColor = 'var(--kocak-color)';
-                
-                // Reset animations
-                document.querySelector('.header-image').style.animation = 'none';
-                document.querySelectorAll('button').forEach(btn => {
-                    btn.style.backgroundColor = '';
-                });
-                
-                // Clear rainbow interval
-                if (document.body.dataset.rainbowInterval) {
-                    clearInterval(parseInt(document.body.dataset.rainbowInterval));
-                }
-            }
-        }
-
-        // Initialize the app
-        document.addEventListener('DOMContentLoaded', () => {
-            createStars();
-            
-            // Kocak mode button
-            document.getElementById('kocak-mode').addEventListener('click', toggleKocakMode);
-            
-            // Sidebar functionality
-            const sidebar = document.getElementById('sidebar');
-            const sidebarToggle = document.getElementById('sidebar-toggle');
-            const homeLink = document.getElementById('home-link');
-            const devLink = document.getElementById('dev-link');
-            const devInfo = document.getElementById('dev-info');
-            
-            sidebarToggle.addEventListener('click', (e) => {
-                e.stopPropagation();
-                sidebar.classList.toggle('open');
-            });
-            
-            homeLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                devInfo.style.display = 'none';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                sidebar.classList.remove('open');
-            });
-            
-            devLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                devInfo.style.display = 'block';
-                sidebar.classList.remove('open');
-            });
-            
-            // Close sidebar when clicking outside
-            document.addEventListener('click', (e) => {
-                if (!sidebar.contains(e.target) && e.target !== sidebarToggle) {
-                    sidebar.classList.remove('open');
-                }
-            });
-            
-            // Main functionality
+        // Pastikan DOM sudah fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Deklarasi semua element yang dibutuhkan
             const urlInput = document.getElementById('url-input');
             const fetchBtn = document.getElementById('fetch-btn');
             const loading = document.getElementById('loading');
             const resultSection = document.getElementById('result-section');
             const htmlDisplay = document.getElementById('html-display');
-            const downloadBtn = document.getElementById('download-btn');
             
-            fetchBtn.addEventListener('click', async () => {
+            // Fungsi untuk handle click tombol
+            fetchBtn.addEventListener('click', function() {
+                getHTML();
+            });
+            
+            // Fungsi untuk handle press Enter
+            urlInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    getHTML();
+                }
+            });
+            
+            // Fungsi utama untuk ambil HTML
+            function getHTML() {
                 const url = urlInput.value.trim();
+                
                 if (!url) {
-                    alert('Woi, URLnya kosong nih bang! 😅');
+                    alert('Bang, URLnya jangan kosong dong! 😅');
                     return;
                 }
                 
-                // Show loading, hide results
+                // Tampilkan loading
                 loading.style.display = 'block';
                 resultSection.style.display = 'none';
                 
+                // Proses fetch HTML
+                fetchHTML(url)
+                    .then(html => {
+                        htmlDisplay.textContent = html;
+                        resultSection.style.display = 'block';
+                    })
+                    .catch(error => {
+                        htmlDisplay.innerHTML = `😱 <strong>Error bang!</strong><br>${error.message}<br><br>Hubungi dev ya!`;
+                        resultSection.style.display = 'block';
+                    })
+                    .finally(() => {
+                        loading.style.display = 'none';
+                    });
+            }
+            
+            // Fungsi fetch HTML dengan CORS proxy
+            async function fetchHTML(url) {
                 try {
-                    // Add https:// if not present
-                    let fullUrl = url;
+                    // Tambahkan https:// jika belum ada
                     if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                        fullUrl = 'https://' + url;
+                        url = 'https://' + url;
                     }
                     
-                    const html = await fetchHTML(fullUrl);
+                    // Gunakan CORS proxy
+                    const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
+                    const response = await fetch(proxyUrl);
                     
-                    // Display the HTML
-                    htmlDisplay.textContent = html;
-                    resultSection.style.display = 'block';
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
                     
-                    // Set up download with the domain as filename
-                    try {
-                        const domain = new URL(fullUrl).hostname;
-                        downloadBtn.onclick = () => downloadHTML(html, `${domain}.html`);
-                    } catch {
-                        downloadBtn.onclick = () => downloadHTML(html, 'source.html');
+                    const data = await response.json();
+                    
+                    if (data.contents) {
+                        return data.contents;
+                    } else {
+                        throw new Error('HTML tidak ditemukan di response');
                     }
                 } catch (error) {
-                    htmlDisplay.innerHTML = `😱 <span class="kocak-text">Eror bang!</span> Silahkan hubungin owner\n\nError: ${error.message}\n\n<a href="https://t.me/Zandkav" target="_blank" style="color: var(--kocak-color);">Klik ini buat contact dev</a>`;
-                    resultSection.style.display = 'block';
-                } finally {
-                    loading.style.display = 'none';
+                    throw new Error(`Gagal mengambil HTML: ${error.message}`);
                 }
-            });
-            
-            // Allow pressing Enter in the input field
-            urlInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') {
-                    fetchBtn.click();
-                }
-            });
-            
-            // Random funny hover effect for buttons
-            document.querySelectorAll('button').forEach(btn => {
-                btn.addEventListener('mouseover', () => {
-                    if (document.body.classList.contains('kocak-active')) {
-                        btn.style.transform = 'rotate(5deg) scale(1.1)';
-                    }
-                });
-                btn.addEventListener('mouseout', () => {
-                    btn.style.transform = '';
-                });
-            });
+            }
         });
     </script>
 </body>
