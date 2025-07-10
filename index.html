@@ -31,6 +31,74 @@
             position: relative;
         }
         
+        /* Password Screen */
+        .password-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        
+        .password-box {
+            background: linear-gradient(135deg, var(--dark-color), #1a3a1a);
+            padding: 2rem;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        .password-box h2 {
+            margin-bottom: 1.5rem;
+            color: var(--light-color);
+        }
+        
+        .password-input {
+            width: 100%;
+            padding: 12px 15px;
+            margin-bottom: 1rem;
+            border: 2px solid var(--primary-color);
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+        }
+        
+        .password-submit {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .password-submit:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .password-error {
+            color: #ff6b6b;
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        /* Main Content (hidden initially) */
+        .main-content {
+            display: none;
+        }
+        
         header {
             background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
             padding: 2rem;
@@ -53,9 +121,9 @@
         }
         
         .wa-logo {
-            position: absolute;
-            top: 10px;
-            left: 10px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
             width: 60px;
             height: 60px;
             border-radius: 50%;
@@ -128,6 +196,21 @@
         .result-section {
             display: none;
             margin-top: 2rem;
+            position: relative;
+        }
+        
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        
+        .download-btn {
+            background-color: var(--dark-color);
+            position: absolute;
+            top: 10px;
+            right: 10px;
         }
         
         .html-display {
@@ -139,6 +222,7 @@
             overflow-y: auto;
             font-family: 'Courier New', Courier, monospace;
             white-space: pre-wrap;
+            margin-top: 50px;
         }
         
         .loading {
@@ -285,214 +369,284 @@
     </style>
 </head>
 <body>
-    <!-- WA Logo -->
-    <a href="https://whatsapp.com/channel/0029Vaqe6AA5PO13FUcYkJ3b" class="wa-logo" target="_blank" title="WhatsApp Channel">
-        <i class="fab fa-whatsapp"></i>
-    </a>
-    
-    <!-- Sidebar Toggle -->
-    <div class="sidebar-toggle" id="sidebar-toggle">
-        <i class="fas fa-bars"></i>
+    <!-- Password Screen -->
+    <div class="password-screen" id="password-screen">
+        <div class="password-box">
+            <h2><i class="fas fa-lock"></i> Masukkan Kunci Akses</h2>
+            <input type="password" class="password-input" id="password-input" placeholder="Masukkan kunci...">
+            <button class="password-submit" id="password-submit">Masuk</button>
+            <div class="password-error" id="password-error">
+                Kunci salah! Coba lagi.
+            </div>
+        </div>
     </div>
     
-    <!-- Sidebar -->
-    <div class="sidebar" id="sidebar">
-        <div class="sidebar-menu">
-            <li>
-                <a href="#" id="home-link">
-                    <i class="fas fa-home"></i> Home
-                </a>
-            </li>
-            <li>
-                <a href="#" id="dev-link">
-                    <i class="fas fa-user"></i> Developer
-                </a>
-            </li>
+    <!-- Main Content (hidden initially) -->
+    <div class="main-content" id="main-content">
+        <!-- WA Logo (Bottom Right) -->
+        <a href="https://whatsapp.com/channel/0029Vaqe6AA5PO13FUcYkJ3b" class="wa-logo" target="_blank" title="WhatsApp Channel">
+            <i class="fab fa-whatsapp"></i>
+        </a>
+        
+        <!-- Sidebar Toggle -->
+        <div class="sidebar-toggle" id="sidebar-toggle">
+            <i class="fas fa-bars"></i>
         </div>
         
-        <div class="developer-info" id="dev-info" style="display: none;">
-            <h3>Halo kak! 👋</h3>
-            <p>Dev pembikin web ini bernama <strong>ZanDKav</strong> ya kak. Kalo mau tanya-tanya silahkan hubungin:</p>
+        <!-- Sidebar -->
+        <div class="sidebar" id="sidebar">
+            <div class="sidebar-menu">
+                <li>
+                    <a href="#" id="home-link">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                <li>
+                    <a href="#" id="dev-link">
+                        <i class="fas fa-user"></i> Developer
+                    </a>
+                </li>
+            </div>
             
-            <div class="social-icons">
-                <a href="https://t.me/Zandkav" class="social-icon" target="_blank" title="Telegram">
-                    <i class="fab fa-telegram"></i>
-                </a>
-                <a href="https://whatsapp.com/channel/0029Vaqe6AA5PO13FUcYkJ3b" class="social-icon" target="_blank" title="WhatsApp Channel">
-                    <i class="fab fa-whatsapp"></i>
-                </a>
+            <div class="developer-info" id="dev-info" style="display: none;">
+                <h3>Halo kak! 👋</h3>
+                <p>Dev pembikin web ini bernama <strong>ZanDKav</strong> ya kak. Kalo mau tanya-tanya silahkan hubungin:</p>
+                
+                <div class="social-icons">
+                    <a href="https://t.me/Zandkav" class="social-icon" target="_blank" title="Telegram">
+                        <i class="fab fa-telegram"></i>
+                    </a>
+                    <a href="https://whatsapp.com/channel/0029Vaqe6AA5PO13FUcYkJ3b" class="social-icon" target="_blank" title="WhatsApp Channel">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
             </div>
         </div>
-    </div>
-    
-    <header>
-        <img src="https://files.catbox.moe/0c2kht.jpg" alt="ZanDKav Logo" class="header-image">
-        <h1>HTML ZanDKav</h1>
-        <p>View HTML source of any webpage with ease</p>
-    </header>
-    
-    <div class="container">
-        <section class="input-section">
-            <h2>Enter URL to View HTML</h2>
-            <div class="input-group">
-                <input type="url" id="url-input" placeholder="https://example.com" required>
-                <button id="fetch-btn"><i class="fas fa-code"></i> Cek HTML</button>
-            </div>
-            <p>Masukkan URL website (contoh: https://github.com/username/repo)</p>
-        </section>
         
-        <div class="loading" id="loading">
-            <p>Memuat HTML... Sabar ya bang!</p>
+        <header>
+            <img src="https://files.catbox.moe/0c2kht.jpg" alt="ZanDKav Logo" class="header-image">
+            <h1>HTML ZanDKav</h1>
+            <p>View HTML source of any webpage with ease</p>
+        </header>
+        
+        <div class="container">
+            <section class="input-section">
+                <h2>Enter URL to View HTML</h2>
+                <div class="input-group">
+                    <input type="url" id="url-input" placeholder="https://example.com" required>
+                    <button id="fetch-btn"><i class="fas fa-code"></i> Cek HTML</button>
+                </div>
+                <p>Masukkan URL website (contoh: https://github.com/username/repo)</p>
+            </section>
+            
+            <div class="loading" id="loading">
+                <p>Memuat HTML... Sabar ya bang!</p>
+            </div>
+            
+            <section class="result-section" id="result-section">
+                <button class="download-btn" id="download-btn"><i class="fas fa-download"></i> Download HTML</button>
+                <div class="html-display" id="html-display"></div>
+            </section>
         </div>
         
-        <section class="result-section" id="result-section">
-            <div class="html-display" id="html-display"></div>
-        </section>
+        <footer>
+            <p>HTML ZanDKav © 2023 | A simple tool to view webpage HTML source</p>
+            <p>Kalo error, <strong>sabar ya bang!</strong> 😊</p>
+        </footer>
     </div>
-    
-    <footer>
-        <p>HTML ZanDKav © 2023 | A simple tool to view webpage HTML source</p>
-        <p>Kalo error, <strong>sabar ya bang!</strong> 😊</p>
-    </footer>
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Elements
-            const urlInput = document.getElementById('url-input');
-            const fetchBtn = document.getElementById('fetch-btn');
-            const loading = document.getElementById('loading');
-            const resultSection = document.getElementById('result-section');
-            const htmlDisplay = document.getElementById('html-display');
-            const sidebar = document.getElementById('sidebar');
-            const sidebarToggle = document.getElementById('sidebar-toggle');
-            const homeLink = document.getElementById('home-link');
-            const devLink = document.getElementById('dev-link');
-            const devInfo = document.getElementById('dev-info');
+            // Password elements
+            const passwordScreen = document.getElementById('password-screen');
+            const passwordInput = document.getElementById('password-input');
+            const passwordSubmit = document.getElementById('password-submit');
+            const passwordError = document.getElementById('password-error');
+            const mainContent = document.getElementById('main-content');
             
-            // Sidebar functionality
-            sidebarToggle.addEventListener('click', function() {
-                sidebar.classList.toggle('open');
+            // Correct password
+            const CORRECT_PASSWORD = "ZANDKAV WEB";
+            
+            // Password submit handler
+            passwordSubmit.addEventListener('click', function() {
+                checkPassword();
             });
             
-            homeLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                devInfo.style.display = 'none';
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                sidebar.classList.remove('open');
-            });
-            
-            devLink.addEventListener('click', function(e) {
-                e.preventDefault();
-                devInfo.style.display = devInfo.style.display === 'block' ? 'none' : 'block';
-            });
-            
-            // Close sidebar when clicking outside
-            document.addEventListener('click', function(e) {
-                if (!sidebar.contains(e.target) && e.target !== sidebarToggle) {
-                    sidebar.classList.remove('open');
-                }
-            });
-            
-            // Main functionality
-            fetchBtn.addEventListener('click', function() {
-                fetchAndDisplayHTML();
-            });
-            
-            urlInput.addEventListener('keypress', function(e) {
+            // Also allow Enter key
+            passwordInput.addEventListener('keypress', function(e) {
                 if (e.key === 'Enter') {
-                    fetchAndDisplayHTML();
+                    checkPassword();
                 }
             });
             
-            async function fetchAndDisplayHTML() {
-                const url = urlInput.value.trim();
+            function checkPassword() {
+                const enteredPassword = passwordInput.value.trim();
                 
-                if (!url) {
-                    alert('Bang, URLnya jangan kosong dong! 😅');
-                    return;
-                }
-                
-                // Show loading
-                loading.style.display = 'block';
-                resultSection.style.display = 'none';
-                
-                try {
-                    // Add https:// if not present
-                    let fullUrl = url;
-                    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                        fullUrl = 'https://' + url;
-                    }
-                    
-                    // Fetch HTML
-                    const html = await fetchHTML(fullUrl);
-                    
-                    // Display HTML
-                    htmlDisplay.textContent = html;
-                    resultSection.style.display = 'block';
-                    
-                    // Auto download
-                    autoDownloadHTML(html, fullUrl);
-                    
-                } catch (error) {
-                    htmlDisplay.innerHTML = `😱 <strong>Error bang!</strong><br>${error.message}<br><br>Hubungi dev ya!`;
-                    resultSection.style.display = 'block';
-                } finally {
-                    loading.style.display = 'none';
+                if (enteredPassword.toUpperCase() === CORRECT_PASSWORD) {
+                    // Correct password
+                    passwordScreen.style.display = 'none';
+                    mainContent.style.display = 'block';
+                    localStorage.setItem('zandkav-auth', 'true');
+                } else {
+                    // Wrong password
+                    passwordError.style.display = 'block';
+                    passwordInput.value = '';
+                    passwordInput.focus();
                 }
             }
             
-            async function fetchHTML(url) {
-                try {
-                    // Use CORS proxy
-                    const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
-                    const response = await fetch(proxyUrl);
-                    
-                    if (!response.ok) {
-                        throw new Error(`HTTP error! status: ${response.status}`);
-                    }
-                    
-                    const data = await response.json();
-                    
-                    if (data.contents) {
-                        return data.contents;
-                    } else {
-                        throw new Error('HTML tidak ditemukan di response');
-                    }
-                } catch (error) {
-                    throw new Error(`Gagal mengambil HTML: ${error.message}`);
-                }
+            // Check if already authenticated
+            if (localStorage.getItem('zandkav-auth') === 'true') {
+                passwordScreen.style.display = 'none';
+                mainContent.style.display = 'block';
             }
             
-            function autoDownloadHTML(html, url) {
-                try {
-                    // Create filename from URL
-                    let filename = 'source.html';
+            // Main functionality (only runs after password is correct)
+            if (mainContent.style.display === 'block') {
+                // Elements
+                const urlInput = document.getElementById('url-input');
+                const fetchBtn = document.getElementById('fetch-btn');
+                const downloadBtn = document.getElementById('download-btn');
+                const loading = document.getElementById('loading');
+                const resultSection = document.getElementById('result-section');
+                const htmlDisplay = document.getElementById('html-display');
+                const sidebar = document.getElementById('sidebar');
+                const sidebarToggle = document.getElementById('sidebar-toggle');
+                const homeLink = document.getElementById('home-link');
+                const devLink = document.getElementById('dev-link');
+                const devInfo = document.getElementById('dev-info');
+                
+                // Current HTML content
+                let currentHTML = '';
+                
+                // Sidebar functionality
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('open');
+                });
+                
+                homeLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    devInfo.style.display = 'none';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    sidebar.classList.remove('open');
+                });
+                
+                devLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    devInfo.style.display = devInfo.style.display === 'block' ? 'none' : 'block';
+                });
+                
+                // Close sidebar when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!sidebar.contains(e.target) && e.target !== sidebarToggle) {
+                        sidebar.classList.remove('open');
+                    }
+                });
+                
+                // Main functionality
+                fetchBtn.addEventListener('click', function() {
+                    fetchAndDisplayHTML();
+                });
+                
+                urlInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        fetchAndDisplayHTML();
+                    }
+                });
+                
+                // Download button
+                downloadBtn.addEventListener('click', function() {
+                    downloadHTML(currentHTML, urlInput.value);
+                });
+                
+                async function fetchAndDisplayHTML() {
+                    const url = urlInput.value.trim();
+                    
+                    if (!url) {
+                        alert('Bang, URLnya jangan kosong dong! 😅');
+                        return;
+                    }
+                    
+                    // Show loading
+                    loading.style.display = 'block';
+                    resultSection.style.display = 'none';
+                    
                     try {
-                        const domain = new URL(url).hostname;
-                        filename = `${domain.replace('www.', '')}_source.html`;
-                    } catch (e) {
-                        console.log('Using default filename');
+                        // Add https:// if not present
+                        let fullUrl = url;
+                        if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                            fullUrl = 'https://' + url;
+                        }
+                        
+                        // Fetch HTML
+                        currentHTML = await fetchHTML(fullUrl);
+                        
+                        // Display HTML
+                        htmlDisplay.textContent = currentHTML;
+                        resultSection.style.display = 'block';
+                        
+                    } catch (error) {
+                        htmlDisplay.innerHTML = `😱 <strong>Error bang!</strong><br>${error.message}<br><br>Hubungi dev ya!`;
+                        resultSection.style.display = 'block';
+                    } finally {
+                        loading.style.display = 'none';
                     }
-                    
-                    // Create download link
-                    const blob = new Blob([html], { type: 'text/html' });
-                    const urlObj = URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = urlObj;
-                    a.download = filename;
-                    
-                    // Trigger download
-                    document.body.appendChild(a);
-                    a.click();
-                    
-                    // Clean up
-                    setTimeout(() => {
-                        document.body.removeChild(a);
-                        URL.revokeObjectURL(urlObj);
-                    }, 100);
-                    
-                } catch (error) {
-                    console.error('Auto download failed:', error);
+                }
+                
+                async function fetchHTML(url) {
+                    try {
+                        // Use CORS proxy
+                        const proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent(url);
+                        const response = await fetch(proxyUrl);
+                        
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        
+                        const data = await response.json();
+                        
+                        if (data.contents) {
+                            return data.contents;
+                        } else {
+                            throw new Error('HTML tidak ditemukan di response');
+                        }
+                    } catch (error) {
+                        throw new Error(`Gagal mengambil HTML: ${error.message}`);
+                    }
+                }
+                
+                function downloadHTML(html, url) {
+                    try {
+                        // Create filename from URL
+                        let filename = 'source.html';
+                        try {
+                            const domain = new URL(url).hostname;
+                            filename = `${domain.replace('www.', '')}_source.html`;
+                        } catch (e) {
+                            console.log('Using default filename');
+                        }
+                        
+                        // Create download link
+                        const blob = new Blob([html], { type: 'text/html' });
+                        const urlObj = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        a.href = urlObj;
+                        a.download = filename;
+                        
+                        // Trigger download
+                        document.body.appendChild(a);
+                        a.click();
+                        
+                        // Clean up
+                        setTimeout(() => {
+                            document.body.removeChild(a);
+                            URL.revokeObjectURL(urlObj);
+                        }, 100);
+                        
+                    } catch (error) {
+                        console.error('Download failed:', error);
+                        alert('Gagal download HTML bang! 😢');
+                    }
                 }
             }
         });
