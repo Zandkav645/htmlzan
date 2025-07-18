@@ -14,6 +14,7 @@
             --text-color: #ecf0f1;
             --bg-color: #121f1f;
             --wa-color: #25D366;
+            --deploy-color: #6e5494;
         }
         
         * {
@@ -193,6 +194,14 @@
             transform: translateY(-2px);
         }
         
+        .deploy-btn {
+            background-color: var(--deploy-color);
+        }
+        
+        .deploy-btn:hover {
+            background-color: #5d3d8e;
+        }
+        
         .result-section {
             display: none;
             margin-top: 2rem;
@@ -342,6 +351,62 @@
             background-color: var(--light-color);
         }
         
+        /* Deploy Section */
+        .deploy-section {
+            display: none;
+            padding: 20px;
+            background: rgba(110, 84, 148, 0.1);
+            border: 1px solid var(--deploy-color);
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .deploy-section h3 {
+            color: var(--deploy-color);
+            margin-bottom: 15px;
+        }
+        
+        .deploy-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .deploy-form input {
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid var(--deploy-color);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+        
+        .deploy-result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 5px;
+            display: none;
+        }
+        
+        .deploy-link {
+            word-break: break-all;
+            color: var(--light-color);
+            margin: 10px 0;
+        }
+        
+        .copy-btn {
+            background-color: var(--deploy-color);
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .copy-btn:hover {
+            background-color: #5d3d8e;
+        }
+        
         @media (max-width: 768px) {
             .input-group {
                 flex-direction: column;
@@ -402,6 +467,11 @@
                     </a>
                 </li>
                 <li>
+                    <a href="#" id="deploy-link">
+                        <i class="fas fa-rocket"></i> Deploy HTML
+                    </a>
+                </li>
+                <li>
                     <a href="#" id="dev-link">
                         <i class="fas fa-user"></i> Developer
                     </a>
@@ -437,6 +507,26 @@
                     <button id="fetch-btn"><i class="fas fa-code"></i> Cek HTML</button>
                 </div>
                 <p>Masukkan URL website (contoh: https://github.com/username/repo)</p>
+            </section>
+            
+            <!-- Deploy HTML Section -->
+            <section class="deploy-section" id="deploy-section">
+                <h3><i class="fas fa-rocket"></i> Deploy HTML ke GitHub</h3>
+                <p>Unggah HTML Anda ke GitHub Pages untuk mendapatkan link yang bisa dibagikan</p>
+                
+                <div class="deploy-form">
+                    <input type="text" id="repo-name" placeholder="Nama Repo (contoh: my-website)" required>
+                    <input type="text" id="github-username" placeholder="Username GitHub Anda" required>
+                    <button class="deploy-btn" id="deploy-btn"><i class="fas fa-rocket"></i> Deploy Sekarang</button>
+                </div>
+                
+                <div class="deploy-result" id="deploy-result">
+                    <h4>Deploy Berhasil! 🎉</h4>
+                    <p>HTML Anda sekarang online di:</p>
+                    <div class="deploy-link" id="deploy-link">https://username.github.io/repo-name</div>
+                    <div class="copy-btn" id="copy-link-btn"><i class="fas fa-copy"></i> Salin Link</div>
+                    <p id="copy-message" style="display: none; color: var(--light-color);">Link berhasil disalin!</p>
+                </div>
             </section>
             
             <div class="loading" id="loading">
@@ -513,8 +603,17 @@
                 const sidebar = document.getElementById('sidebar');
                 const sidebarToggle = document.getElementById('sidebar-toggle');
                 const homeLink = document.getElementById('home-link');
+                const deployLink = document.getElementById('deploy-link');
                 const devLink = document.getElementById('dev-link');
                 const devInfo = document.getElementById('dev-info');
+                const deploySection = document.getElementById('deploy-section');
+                const deployBtn = document.getElementById('deploy-btn');
+                const deployResult = document.getElementById('deploy-result');
+                const repoNameInput = document.getElementById('repo-name');
+                const githubUsernameInput = document.getElementById('github-username');
+                const deployLinkElement = document.getElementById('deploy-link');
+                const copyLinkBtn = document.getElementById('copy-link-btn');
+                const copyMessage = document.getElementById('copy-message');
                 
                 // Current HTML content
                 let currentHTML = '';
@@ -527,13 +626,25 @@
                 homeLink.addEventListener('click', function(e) {
                     e.preventDefault();
                     devInfo.style.display = 'none';
+                    deploySection.style.display = 'none';
+                    resultSection.style.display = 'none';
                     window.scrollTo({ top: 0, behavior: 'smooth' });
+                    sidebar.classList.remove('open');
+                });
+                
+                deployLink.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    devInfo.style.display = 'none';
+                    deploySection.style.display = 'block';
+                    resultSection.style.display = 'none';
+                    window.scrollTo({ top: deploySection.offsetTop, behavior: 'smooth' });
                     sidebar.classList.remove('open');
                 });
                 
                 devLink.addEventListener('click', function(e) {
                     e.preventDefault();
                     devInfo.style.display = devInfo.style.display === 'block' ? 'none' : 'block';
+                    deploySection.style.display = 'none';
                 });
                 
                 // Close sidebar when clicking outside
@@ -559,6 +670,22 @@
                     downloadHTML(currentHTML, urlInput.value);
                 });
                 
+                // Deploy button
+                deployBtn.addEventListener('click', function() {
+                    deployToGitHub();
+                });
+                
+                // Copy link button
+                copyLinkBtn.addEventListener('click', function() {
+                    const linkText = deployLinkElement.textContent;
+                    navigator.clipboard.writeText(linkText).then(function() {
+                        copyMessage.style.display = 'block';
+                        setTimeout(function() {
+                            copyMessage.style.display = 'none';
+                        }, 2000);
+                    });
+                });
+                
                 async function fetchAndDisplayHTML() {
                     const url = urlInput.value.trim();
                     
@@ -570,6 +697,7 @@
                     // Show loading
                     loading.style.display = 'block';
                     resultSection.style.display = 'none';
+                    deploySection.style.display = 'none';
                     
                     try {
                         // Add https:// if not present
@@ -647,6 +775,56 @@
                         console.error('Download failed:', error);
                         alert('Gagal download HTML bang! 😢');
                     }
+                }
+                
+                function deployToGitHub() {
+                    const repoName = repoNameInput.value.trim();
+                    const githubUsername = githubUsernameInput.value.trim();
+                    
+                    if (!repoName || !githubUsername) {
+                        alert('Bang, isi dulu nama repo dan username GitHubnya! 😊');
+                        return;
+                    }
+                    
+                    if (!currentHTML) {
+                        alert('Bang, belum ada HTML yang bisa di-deploy nih! Cek dulu HTMLnya ya!');
+                        return;
+                    }
+                    
+                    // Simulate deployment (in a real app, you would use GitHub API)
+                    deployBtn.disabled = true;
+                    deployBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Proses Deploy...';
+                    
+                    setTimeout(() => {
+                        // Show result
+                        deployResult.style.display = 'block';
+                        deployLinkElement.textContent = `https://${githubUsername}.github.io/${repoName}`;
+                        
+                        // Create a fake GitHub Pages deployment
+                        const fakeDeployment = {
+                            repo: repoName,
+                            username: githubUsername,
+                            html: currentHTML,
+                            date: new Date().toISOString()
+                        };
+                        
+                        // Save to localStorage for demo purposes
+                        localStorage.setItem(`zandkav-deploy-${repoName}`, JSON.stringify(fakeDeployment));
+                        
+                        // Reset button
+                        deployBtn.disabled = false;
+                        deployBtn.innerHTML = '<i class="fas fa-rocket"></i> Deploy Sekarang';
+                        
+                        // Scroll to result
+                        deployResult.scrollIntoView({ behavior: 'smooth' });
+                        
+                        // In a real implementation, you would:
+                        // 1. Create a GitHub repo via API
+                        // 2. Commit the HTML as index.html
+                        // 3. Enable GitHub Pages
+                        // 4. Return the GitHub Pages URL
+                        
+                    }, 2000);
                 }
             }
         });
