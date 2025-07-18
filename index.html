@@ -361,6 +361,28 @@
             margin-top: 20px;
         }
         
+        .deploy-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .html-preview {
+            flex: 1;
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 4px;
+            padding: 1rem;
+            height: 500px;
+            overflow-y: auto;
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+        }
+        
+        .deploy-form-container {
+            flex: 1;
+        }
+        
         .deploy-section h3 {
             color: var(--deploy-color);
             margin-bottom: 15px;
@@ -409,6 +431,10 @@
         
         @media (max-width: 768px) {
             .input-group {
+                flex-direction: column;
+            }
+            
+            .deploy-container {
                 flex-direction: column;
             }
             
@@ -500,7 +526,7 @@
         </header>
         
         <div class="container">
-            <section class="input-section">
+            <section class="input-section" id="input-section">
                 <h2>Enter URL to View HTML</h2>
                 <div class="input-group">
                     <input type="url" id="url-input" placeholder="https://example.com" required>
@@ -514,18 +540,27 @@
                 <h3><i class="fas fa-rocket"></i> Deploy HTML ke GitHub</h3>
                 <p>Unggah HTML Anda ke GitHub Pages untuk mendapatkan link yang bisa dibagikan</p>
                 
-                <div class="deploy-form">
-                    <input type="text" id="repo-name" placeholder="Nama Repo (contoh: my-website)" required>
-                    <input type="text" id="github-username" placeholder="Username GitHub Anda" required>
-                    <button class="deploy-btn" id="deploy-btn"><i class="fas fa-rocket"></i> Deploy Sekarang</button>
-                </div>
-                
-                <div class="deploy-result" id="deploy-result">
-                    <h4>Deploy Berhasil! 🎉</h4>
-                    <p>HTML Anda sekarang online di:</p>
-                    <div class="deploy-link" id="deploy-link">https://username.github.io/repo-name</div>
-                    <div class="copy-btn" id="copy-link-btn"><i class="fas fa-copy"></i> Salin Link</div>
-                    <p id="copy-message" style="display: none; color: var(--light-color);">Link berhasil disalin!</p>
+                <div class="deploy-container">
+                    <div class="html-preview" id="html-preview">
+                        <!-- HTML content will be displayed here -->
+                        <p style="color: #aaa;">HTML akan muncul di sini setelah Anda mengecek HTML dari URL</p>
+                    </div>
+                    
+                    <div class="deploy-form-container">
+                        <div class="deploy-form">
+                            <input type="text" id="github-username" placeholder="Username GitHub Anda" required>
+                            <input type="text" id="repo-name" placeholder="Nama Repo (contoh: my-website)" required>
+                            <button class="deploy-btn" id="deploy-btn"><i class="fas fa-rocket"></i> Deploy Sekarang</button>
+                        </div>
+                        
+                        <div class="deploy-result" id="deploy-result">
+                            <h4>Deploy Berhasil! 🎉</h4>
+                            <p>HTML Anda sekarang online di:</p>
+                            <div class="deploy-link" id="deploy-link">https://username.github.io/repo-name</div>
+                            <div class="copy-btn" id="copy-link-btn"><i class="fas fa-copy"></i> Salin Link</div>
+                            <p id="copy-message" style="display: none; color: var(--light-color);">Link berhasil disalin!</p>
+                        </div>
+                    </div>
                 </div>
             </section>
             
@@ -606,6 +641,7 @@
                 const deployLink = document.getElementById('deploy-link');
                 const devLink = document.getElementById('dev-link');
                 const devInfo = document.getElementById('dev-info');
+                const inputSection = document.getElementById('input-section');
                 const deploySection = document.getElementById('deploy-section');
                 const deployBtn = document.getElementById('deploy-btn');
                 const deployResult = document.getElementById('deploy-result');
@@ -614,6 +650,7 @@
                 const deployLinkElement = document.getElementById('deploy-link');
                 const copyLinkBtn = document.getElementById('copy-link-btn');
                 const copyMessage = document.getElementById('copy-message');
+                const htmlPreview = document.getElementById('html-preview');
                 
                 // Current HTML content
                 let currentHTML = '';
@@ -628,6 +665,7 @@
                     devInfo.style.display = 'none';
                     deploySection.style.display = 'none';
                     resultSection.style.display = 'none';
+                    inputSection.style.display = 'block';
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                     sidebar.classList.remove('open');
                 });
@@ -637,14 +675,21 @@
                     devInfo.style.display = 'none';
                     deploySection.style.display = 'block';
                     resultSection.style.display = 'none';
+                    inputSection.style.display = 'none';
                     window.scrollTo({ top: deploySection.offsetTop, behavior: 'smooth' });
                     sidebar.classList.remove('open');
+                    
+                    // Update HTML preview if we have content
+                    if (currentHTML) {
+                        htmlPreview.textContent = currentHTML;
+                    }
                 });
                 
                 devLink.addEventListener('click', function(e) {
                     e.preventDefault();
                     devInfo.style.display = devInfo.style.display === 'block' ? 'none' : 'block';
                     deploySection.style.display = 'none';
+                    inputSection.style.display = 'block';
                 });
                 
                 // Close sidebar when clicking outside
@@ -698,6 +743,7 @@
                     loading.style.display = 'block';
                     resultSection.style.display = 'none';
                     deploySection.style.display = 'none';
+                    inputSection.style.display = 'block';
                     
                     try {
                         // Add https:// if not present
@@ -711,6 +757,7 @@
                         
                         // Display HTML
                         htmlDisplay.textContent = currentHTML;
+                        htmlPreview.textContent = currentHTML;
                         resultSection.style.display = 'block';
                         
                     } catch (error) {
@@ -798,14 +845,16 @@
                     setTimeout(() => {
                         // Show result
                         deployResult.style.display = 'block';
-                        deployLinkElement.textContent = `https://${githubUsername}.github.io/${repoName}`;
+                        const finalUrl = `https://${githubUsername}.github.io/${repoName}`;
+                        deployLinkElement.textContent = finalUrl;
                         
                         // Create a fake GitHub Pages deployment
                         const fakeDeployment = {
                             repo: repoName,
                             username: githubUsername,
                             html: currentHTML,
-                            date: new Date().toISOString()
+                            date: new Date().toISOString(),
+                            url: finalUrl
                         };
                         
                         // Save to localStorage for demo purposes
@@ -817,12 +866,6 @@
                         
                         // Scroll to result
                         deployResult.scrollIntoView({ behavior: 'smooth' });
-                        
-                        // In a real implementation, you would:
-                        // 1. Create a GitHub repo via API
-                        // 2. Commit the HTML as index.html
-                        // 3. Enable GitHub Pages
-                        // 4. Return the GitHub Pages URL
                         
                     }, 2000);
                 }
