@@ -32,6 +32,26 @@
             position: relative;
         }
         
+        /* Live Clock */
+        .live-clock {
+            position: fixed;
+            top: 10px;
+            right: 120px;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .live-clock i {
+            margin-right: 8px;
+            color: var(--primary-color);
+        }
+        
         /* Password Screen */
         .password-screen {
             position: fixed;
@@ -473,6 +493,12 @@
                 height: 50px;
                 font-size: 25px;
             }
+            
+            .live-clock {
+                right: 20px;
+                top: 70px;
+                font-size: 12px;
+            }
         }
     </style>
 </head>
@@ -491,6 +517,12 @@
     
     <!-- Main Content (hidden initially) -->
     <div class="main-content" id="main-content">
+        <!-- Live Clock -->
+        <div class="live-clock" id="live-clock">
+            <i class="fas fa-clock"></i>
+            <span id="clock-text">Loading...</span>
+        </div>
+        
         <!-- WA Logo (Bottom Right) -->
         <a href="https://whatsapp.com/channel/0029Vaqe6AA5PO13FUcYkJ3b" class="wa-logo" target="_blank" title="WhatsApp Channel">
             <i class="fab fa-whatsapp"></i>
@@ -607,6 +639,27 @@
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
+            // Fungsi untuk update jam dan tanggal
+            function updateClock() {
+                const now = new Date();
+                const options = { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                };
+                const dateTimeStr = now.toLocaleDateString('id-ID', options);
+                document.getElementById('clock-text').textContent = dateTimeStr;
+            }
+            
+            // Update jam setiap detik
+            setInterval(updateClock, 1000);
+            updateClock(); // Panggil sekali saat pertama kali load
+            
             // Password elements
             const passwordScreen = document.getElementById('password-screen');
             const passwordInput = document.getElementById('password-input');
@@ -688,7 +741,6 @@
             
             // Main functionality (only runs after password is correct)
             if (mainContent.style.display === 'block') {
-                // [Semua kode JavaScript utama yang sama seperti sebelumnya]
                 // Elements
                 const urlInput = document.getElementById('url-input');
                 const fetchBtn = document.getElementById('fetch-btn');
