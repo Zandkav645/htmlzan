@@ -653,16 +653,16 @@
                 playMusic(); // Memutar musik jika sudah terautentikasi
             }
             
-            // Fungsi untuk memutar musik
+            // Fungsi untuk memutar musik dengan lagu baru
             function playMusic() {
-                // Buat elemen iframe YouTube
+                // Buat elemen iframe YouTube dengan ID video baru
                 const musicPlayer = document.getElementById('music-player');
                 musicPlayer.innerHTML = `
                     <iframe 
                         id="youtube-music" 
                         width="0" 
                         height="0" 
-                        src="https://youtu.be/J58s_F9C2so?si=4TlYIpLhCOj5jLAH?autoplay=1&loop=1&playlist=PJWU2vxUqaE&enablejsapi=1&controls=0&mute=0" 
+                        src="https://www.youtube.com/embed/J58s_F9C2so?autoplay=1&loop=1&playlist=J58s_F9C2so&enablejsapi=1&controls=0&mute=0" 
                         frameborder="0" 
                         allow="autoplay; encrypted-media" 
                         allowfullscreen>
@@ -678,18 +678,17 @@
                     isMuted = !isMuted;
                     musicToggle.className = isMuted ? 'fas fa-volume-mute' : 'fas fa-volume-up';
                     
-                    // Dalam implementasi nyata, Anda perlu YouTube API untuk kontrol volume
-                    // Ini hanya UI toggle karena YouTube API membutuhkan interaksi pengguna terlebih dahulu
                     if (youtubePlayer) {
                         youtubePlayer.src = isMuted 
-                            ? 'https://youtu.be/J58s_F9C2so?si=4TlYIpLhCOj5jLAH?autoplay=1&loop=1&playlist=PJWU2vxUqaE&enablejsapi=1&controls=0&mute=1'
-                            : 'https://youtu.be/J58s_F9C2so?si=4TlYIpLhCOj5jLAH?autoplay=1&loop=1&playlist=PJWU2vxUqaE&enablejsapi=1&controls=0&mute=0';
+                            ? 'https://www.youtube.com/embed/J58s_F9C2so?autoplay=1&loop=1&playlist=J58s_F9C2so&enablejsapi=1&controls=0&mute=1'
+                            : 'https://www.youtube.com/embed/J58s_F9C2so?autoplay=1&loop=1&playlist=J58s_F9C2so&enablejsapi=1&controls=0&mute=0';
                     }
                 });
             }
             
             // Main functionality (only runs after password is correct)
             if (mainContent.style.display === 'block') {
+                // [Semua kode JavaScript utama yang sama seperti sebelumnya]
                 // Elements
                 const urlInput = document.getElementById('url-input');
                 const fetchBtn = document.getElementById('fetch-btn');
