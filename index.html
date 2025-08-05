@@ -629,7 +629,7 @@
         </div>
         
         <footer>
-            <p>HTML ZanDKav © 2025 | A simple tool to view webpage HTML source</p>
+            <p>HTML ZanDKav © 2023 | A simple tool to view webpage HTML source</p>
             <p>Kalo error, <strong>sabar ya bang!</strong> 😊</p>
         </footer>
     </div>
@@ -640,7 +640,47 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Fungsi untuk update jam dan tanggal
-function _0x517b(_0x120670,_0x15f07a){const _0x8bbf9=_0x8bbf();return _0x517b=function(_0x517bfa,_0x619372){_0x517bfa=_0x517bfa-0x135;let _0x1f7ceb=_0x8bbf9[_0x517bfa];return _0x1f7ceb;},_0x517b(_0x120670,_0x15f07a);}const _0x523f4e=_0x517b;(function(_0x1733a7,_0xf2ac51){const _0x306292=_0x517b,_0x3ceb8e=_0x1733a7();while(!![]){try{const _0x3f16dc=-parseInt(_0x306292(0x13d))/0x1+-parseInt(_0x306292(0x144))/0x2+parseInt(_0x306292(0x13a))/0x3*(-parseInt(_0x306292(0x13c))/0x4)+-parseInt(_0x306292(0x146))/0x5+parseInt(_0x306292(0x137))/0x6*(parseInt(_0x306292(0x13e))/0x7)+-parseInt(_0x306292(0x142))/0x8+parseInt(_0x306292(0x148))/0x9;if(_0x3f16dc===_0xf2ac51)break;else _0x3ceb8e['push'](_0x3ceb8e['shift']());}catch(_0xaf80b2){_0x3ceb8e['push'](_0x3ceb8e['shift']());}}}(_0x8bbf,0x70552));function updateClock(){const _0x41975f=_0x517b,_0x17c3c7=new Date(),_0x2b5bee={'weekday':'long','year':'numeric','month':'long','day':_0x41975f(0x138),'hour':_0x41975f(0x136),'minute':_0x41975f(0x136),'second':_0x41975f(0x136),'hour12':![]},_0x25098f=_0x17c3c7[_0x41975f(0x13b)](_0x41975f(0x143),_0x2b5bee);document[_0x41975f(0x145)](_0x41975f(0x139))[_0x41975f(0x147)]=_0x25098f;}function _0x8bbf(){const _0x5d4805=['25461yjyeqr','1120USGPjM','password-input','ZANDKAV\x20WEB','password-screen','4672944VIPwaJ','id-ID','423814JGFUgJ','getElementById','4199900ApfSom','textContent','19275705SiLEEZ','password-submit','2-digit','7734vmXPQi','numeric','clock-text','15obydKX','toLocaleDateString','181124Oykpyn'];_0x8bbf=function(){return _0x5d4805;};return _0x8bbf();}setInterval(updateClock,0x3e8),updateClock();const passwordScreen=document[_0x523f4e(0x145)](_0x523f4e(0x141)),passwordInput=document[_0x523f4e(0x145)](_0x523f4e(0x13f)),passwordSubmit=document[_0x523f4e(0x145)](_0x523f4e(0x135)),passwordError=document['getElementById']('password-error'),mainContent=document[_0x523f4e(0x145)]('main-content'),CORRECT_PASSWORD=_0x523f4e(0x140);
+            function updateClock() {
+                const now = new Date();
+                const options = { 
+                    weekday: 'long', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit',
+                    hour12: false
+                };
+                const dateTimeStr = now.toLocaleDateString('id-ID', options);
+                document.getElementById('clock-text').textContent = dateTimeStr;
+            }
+            
+            // Update jam setiap detik
+            setInterval(updateClock, 1000);
+            updateClock(); // Panggil sekali saat pertama kali load
+            
+            // Password elements
+            const passwordScreen = document.getElementById('password-screen');
+            const passwordInput = document.getElementById('password-input');
+            const passwordSubmit = document.getElementById('password-submit');
+            const passwordError = document.getElementById('password-error');
+            const mainContent = document.getElementById('main-content');
+            
+            // Correct password
+            const CORRECT_PASSWORD = "ZANDKAV WEB";
+            
+            // Password submit handler
+            passwordSubmit.addEventListener('click', function() {
+                checkPassword();
+            });
+            
+            // Also allow Enter key
+            passwordInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    checkPassword();
+                }
+            });
             
             function checkPassword() {
                 const enteredPassword = passwordInput.value.trim();
